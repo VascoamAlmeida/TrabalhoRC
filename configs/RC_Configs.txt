@@ -1,0 +1,299 @@
+Configuracao de switch Sede (Switch)
+ 
+enable 
+configure terminal
+vlan 10
+name Gestao
+exit
+vlan 20
+name Producao
+exit
+vlan 30
+name Vendas
+exit
+vlan 40
+name Informatica
+exit
+vlan 50
+name RH
+end
+
+
+Configurar portas de acesso Switch sede (Switch)
+//Guardar as Portas
+enable
+configure terminal
+interface range fastethernet 0/1-5
+switchport mode access
+switchport access vlan 10
+exit
+interface range fastethernet 0/6-10
+switchport mode access
+switchport access vlan 20
+exit
+interface range fastethernet 0/11-15
+switchport mode access
+switchport access vlan 30
+exit
+interface range fastethernet 0/16-20
+switchport mode access
+switchport access vlan 40
+exit
+interface gigabitEthernet 0/2
+switchport mode access
+switchport access vlan 40
+exit
+interface range fastethernet 0/21-24
+switchport mode access
+switchport access vlan 50
+end
+
+
+configurar porta trunk (Switch)
+
+enable 
+configure terminal
+interface gigabitethernet 0/1
+switchport mode trunk
+switchport trunk allowed vlan 10,20,30,40,50
+end
+
+
+configuar Router-pt SEDE configurar a interface fastethernet 0/0 (Router)
+
+enable
+configure terminal
+interface fastethernet 0/0.10
+encapsulation dot1Q 10
+ip address 172.28.192.129 255.255.255.224
+exit
+interface fastethernet 0/0.20
+encapsulation dot1Q 20
+ip address 172.28.192.161 255.255.255.224
+exit
+interface fastethernet 0/0.30
+encapsulation dot1Q 30
+ip address 172.28.192.193 255.255.255.224
+exit
+interface fastethernet 0/0.40
+encapsulation dot1Q 40
+ip address 172.28.192.225 255.255.255.224
+exit
+interface fastethernet 0/0.50
+encapsulation dot1Q 50
+ip address 172.28.193.1 255.255.255.224
+end
+
+
+configurar a interface Serial 2/0 (Router)
+
+enable
+configure terminal
+interface serial 2/0
+ip address 172.28.193.81 255.255.255.252
+no shutdown 
+end
+
+
+configuar RIP V2 (Router)
+
+enable 
+configure terminal
+router rip 
+version 2 
+network 172.28.193.0
+network 172.28.192.0
+no auto-summary
+end
+
+
+Configurar Router 1 (Router)
+serial 2/0 <-> sede
+serial 3/0 <-> filial 1
+serial 6/0 <-> filia 2 
+
+enable
+configure terminal
+interface serial 2/0
+ip address 172.28.193.82 255.255.255.252
+no shutdown
+exit
+interface serial 3/0
+ip address 172.28.193.85 255.255.255.252
+no shutdown
+exit
+interface serial 6/0
+ip address 172.28.193.89 255.255.255.252
+no shutdown
+end
+
+
+configuar RIP V2 Router 1 (Router)
+
+enable 
+configure terminal
+router rip
+version 2
+network 172.28.192.0
+network 172.28.193.0
+no auto-summary
+end
+
+
+configurar switch filial 1 (Switch)
+
+enable 
+configure terminal
+vlan 30
+name Vendas
+exit
+vlan 40
+name Informatica
+end
+
+
+Configurar portas de acesso Switch filial 1 (Switch)
+
+enable
+configure terminal
+interface range fastethernet 0/1-12
+switchport mode access
+switchport access vlan 30
+exit
+interface range fastethernet 0/13-24
+switchport mode access
+switchport access vlan 40
+end
+
+
+configurar porta trunk (Switch)
+
+enable 
+configure terminal
+interface gigabitethernet 0/1
+switchport mode trunk
+switchport trunk allowed vlan 30,40
+end
+
+
+configuarar router filial 1 (Router)
+
+enable
+configure terminal
+interface fastethernet 0/0.30
+encapsulation dot1Q 30
+ip address 172.28.192.1 255.255.255.192
+exit
+interface fastethernet 0/0.40
+encapsulation dot1Q 40
+ip address 172.28.192.65 255.255.255.192
+end
+
+
+configurar a interface Serial 2/0 (Router)
+
+enable
+configure terminal
+interface serial 2/0
+ip address 172.28.193.86 255.255.255.252
+no shutdown 
+end
+
+
+configuar RIP V2 (Router)
+
+enable 
+configure terminal
+router rip 
+version 2 
+network 172.28.192.0
+network 172.28.193.0
+no auto-summary
+end
+
+
+configurar switch filial 2 (switch)
+
+enable 
+configure terminal
+vlan 20
+name Producao
+vlan 30
+name Vendas
+exit
+vlan 50
+name RH
+end
+
+
+Configurar portas de acesso Switch filial 2 (switch)
+
+enable
+configure terminal
+interface range fastethernet 0/1-8
+switchport mode access
+switchport access vlan 20
+exit
+interface range fastethernet 0/9-16
+switchport mode access
+switchport access vlan 30
+exit
+interface range fastethernet 0/17-24
+switchport mode access
+switchport access vlan 50
+end
+
+
+configurar porta trunk (Switch)
+
+enable 
+configure terminal
+interface gigabitethernet 0/1
+switchport mode trunk
+switchport trunk allowed vlan 20,30,50
+end
+
+
+configuarar router filial 2 (router)
+
+
+enable
+configure terminal
+interface fastethernet 0/0.20
+encapsulation dot1Q 20
+ip address 172.28.193.33 255.255.255.240
+exit
+interface fastethernet 0/0.30
+encapsulation dot1Q 30
+ip address 172.28.193.49 255.255.255.240
+exit
+interface fastethernet 0/0.50
+encapsulation dot1Q 50
+ip address 172.28.193.65 255.255.255.240
+end
+
+
+configurar a interface Serial 2/0 (router)
+
+enable
+configure terminal
+interface serial 2/0
+ip address 172.28.193.90 255.255.255.252
+no shutdown 
+end
+
+
+configuar RIP V2 (router)
+
+enable 
+configure terminal
+router rip 
+version 2 
+network 172.28.192.0
+network 172.28.193.0
+no auto-summary
+end
+
+
+
+
